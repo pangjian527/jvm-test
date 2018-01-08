@@ -28,6 +28,8 @@ public class NioClientHandler implements Runnable{
             socketChannel = SocketChannel.open();
 
             socketChannel.configureBlocking(false);
+
+            doConnect();
         }catch (IOException e){
             e.printStackTrace();
             System.exit(1);
@@ -36,12 +38,6 @@ public class NioClientHandler implements Runnable{
 
     @Override
     public void run() {
-
-        try {
-            doConnect();
-        }catch (IOException e){
-
-        }
 
         while (!stop){
             try {
@@ -102,11 +98,10 @@ public class NioClientHandler implements Runnable{
             }
 
             if(selectionKey.isReadable()){
-                System.out.println("isReadable...");
                 ByteBuffer byteBuffer = ByteBuffer.allocate(1024);
                 // 读取字节到缓冲区
                 int readBytes = sc.read(byteBuffer);
-
+                System.out.print("【" + Thread.currentThread().getName()+"】");
                 if(readBytes > 0){
                     byteBuffer.flip();
 
@@ -128,6 +123,7 @@ public class NioClientHandler implements Runnable{
 
     private void doWrite(SocketChannel sc) throws IOException {
 
+        System.out.print("【" + Thread.currentThread().getName()+"】");
         byte[] bytes = "ServerTime".getBytes();
 
         ByteBuffer buffer = ByteBuffer.allocate(bytes.length);

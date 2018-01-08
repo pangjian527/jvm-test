@@ -11,14 +11,14 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.Set;
 
-public class MultiplexeTimeServer implements Runnable{
+public class NioMultiplexeTimeServer implements Runnable{
 
 
     private boolean stop = false;
     private ServerSocketChannel serverSocketChannel ;
     private Selector selector;
 
-    public MultiplexeTimeServer(int port) {
+    public NioMultiplexeTimeServer(int port) {
         try{
             selector = Selector.open();
             serverSocketChannel = ServerSocketChannel.open();
@@ -49,7 +49,7 @@ public class MultiplexeTimeServer implements Runnable{
                 Set<SelectionKey> selectionKeys = selector.selectedKeys();
                 Iterator<SelectionKey> iterator = selectionKeys.iterator();
                 while (iterator.hasNext()){
-                    System.out.println("监听都链接...");
+                    System.out.println("监听到链接...");
                     SelectionKey selectionKey = iterator.next();
                     iterator.remove();
 
@@ -63,11 +63,11 @@ public class MultiplexeTimeServer implements Runnable{
 
     private void handlerInput(SelectionKey key) throws IOException{
 
-        System.out.println(Thread.currentThread().getName() );
-
         if(key.isValid()){
 
             if(key.isAcceptable()){
+                System.out.print("【" + Thread.currentThread().getName()+"】");
+                System.out.println("：HandlerInput监听到链接...");
                 // 处理新链接
                 ServerSocketChannel ssc = (ServerSocketChannel)key.channel();
                 SocketChannel socketChannel = ssc.accept();
@@ -89,7 +89,15 @@ public class MultiplexeTimeServer implements Runnable{
                     byteBuffer.get(bytes);
 
                     String body = new String(bytes,"UTF-8");
+
+                    System.out.print("【" + Thread.currentThread().getName()+"】");
                     System.out.println("读取到的消息是：" + body);
+                    System.out.println("【睡眠模拟】业务处理...");
+                    try{
+                        Thread.sleep(1000 * 60 * 2);
+                    }catch (Exception e){
+
+                    }
 
                     String currentTime =
                             body.equals("ServerTime") ?
@@ -100,6 +108,7 @@ public class MultiplexeTimeServer implements Runnable{
                     key.cancel();
                     sc.close();
                 }else{
+                    System.out.print("【" + Thread.currentThread().getName()+"】");
                     System.out.println("读取不到数据...");
                 }
 

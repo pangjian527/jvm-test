@@ -20,7 +20,8 @@ public class TimeServerHandler implements Runnable{
         PrintWriter out = null;
 
         try{
-            Thread.sleep(1000);
+            System.out.println("【睡眠模拟】正在处理业务...");
+            Thread.sleep(1000* 60 * 5);
         }catch (Exception e){
 
         }

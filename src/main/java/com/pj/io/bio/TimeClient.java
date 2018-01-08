@@ -21,6 +21,8 @@ public class TimeClient {
                 socket = new Socket("127.0.0.1",8080);
                 reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
+                System.out.println("【"+ Thread.currentThread().getName()+"】发送消息...");
+
                 writer = new PrintWriter(socket.getOutputStream(),true);
                 writer.println("ServerTime");
 

@@ -9,7 +9,7 @@ public class NioTimeServer {
             port = Integer.valueOf(args[0]);
         }
 
-        MultiplexeTimeServer timeServer = new MultiplexeTimeServer(port);
+        NioMultiplexeTimeServer timeServer = new NioMultiplexeTimeServer(port);
         new Thread(timeServer,"NIO-multiplexe-time-server-001").start();
     }
 

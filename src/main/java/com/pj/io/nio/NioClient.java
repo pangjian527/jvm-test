@@ -9,8 +9,20 @@ public class NioClient {
             port = Integer.valueOf(args[0]);
         }
 
-        NioClientHandler timeServer = new NioClientHandler("127.0.0.1", port);
-        new Thread(timeServer,"NIO-multiplexe-time-server-001").start();
+        /*int i =0 ;
+        while (true){
+            i++;*/
+            try {
+                NioClientHandler timeServer = new NioClientHandler("127.0.0.1", port);
+                //System.out.println("模拟第"+ i +"客户请求。");
+                //Thread.sleep(500);
+                new Thread(timeServer,"NIO-multiplexe-time-server-001").start();
+            }catch (Exception e){
+
+            }
+        //}
+
+
     }
 
 }
